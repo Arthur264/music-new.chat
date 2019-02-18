@@ -1,0 +1,18 @@
+# Management
+click~=6.7
+
+# Sanic
+sanic
+sanic_validation
+sanic-swagger
+sanic-jwt
+uvloop
+asyncio
+pytest-sanic
+
+# Cassandra
+cassandra-driver
+aiocassandra
+
+# Redis
+aioredis
