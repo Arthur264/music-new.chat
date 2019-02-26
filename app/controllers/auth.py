@@ -1,4 +1,5 @@
 from sanic_jwt import exceptions
+
 from app.models.user import UserModel
 
 

@@ -5,37 +5,45 @@ from sanic_jwt import initialize
 
 from app.app_logging import LOGGING
 from app.controllers.auth import authenticate
+from app.listeners.events import before_server_start, after_server_stop
 from app.views.room import RoomView
 from app.views.user import UserView
 from app.websockets import web_socket_chat
-from config import PROJECT_ID, SANIC_SETTINGS, LOGGER_FORMAT
-
-logger = logging.getLogger()
-logger.setLevel('INFO')
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter(LOGGER_FORMAT))
-logger.addHandler(handler)
+from config import PROJECT_ID, SANIC_SETTINGS
 
 SANIC_BLUEPRINT = Blueprint("blueprints", url_prefix="/blueprint", version=1)
 
 
-def create_app(debug=True):
-    log_config = LOGGING if not debug else None
-    app = Sanic(PROJECT_ID, log_config=log_config)
+class MainSetup:
+    _app = None
 
-    app.debug = debug
+    @staticmethod
+    def get_app():
+        return MainSetup._app
 
-    app.config.update(SANIC_SETTINGS)
+    @staticmethod
+    def create_app(debug=True):
+        log_config = LOGGING if not debug else None
+        app = Sanic(PROJECT_ID, log_config=log_config)
 
-    # Auth
-    initialize(app, authenticate=authenticate)
+        app.debug = debug
 
-    # Set routes
-    app.add_route(RoomView.as_view(), '/room')
-    app.add_route(UserView.as_view(), '/user')
-    app.add_websocket_route(handler=web_socket_chat, uri="chat")
+        app.config.update(SANIC_SETTINGS)
 
-    app.blueprint(SANIC_BLUEPRINT)
+        # Auth
+        initialize(app, authenticate=authenticate)
 
-    logging.info('Creating sanic app')
-    return app
+        # Set routes
+        app.add_route(RoomView.as_view(), '/room')
+        app.add_route(UserView.as_view(), '/user')
+        app.add_websocket_route(handler=web_socket_chat, uri="chat")
+
+        # Register listener
+        app.register_listener(before_server_start, 'before_server_start')
+        app.register_listener(after_server_stop, 'after_server_stop')
+
+        app.blueprint(SANIC_BLUEPRINT)
+
+        logging.info('Creating sanic app')
+        MainSetup._app = app
+        return app

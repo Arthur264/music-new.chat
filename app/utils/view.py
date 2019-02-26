@@ -2,11 +2,17 @@ from cassandra.cqlengine.query import LWTException
 from sanic.views import HTTPMethodView
 
 from app.http import error_response, json_response
+from app.main import MainSetup
 from app.utils.request import check_uuid
 
 
 class ModelBaseView(HTTPMethodView):
     model = None
+    app = None
+
+    def dispatch_request(self, request, *args, **kwargs):
+        self.app = MainSetup.get_app()
+        return super().dispatch_request(request, *args, **kwargs)
 
     @staticmethod
     async def _make_request(data, many=False):
@@ -31,7 +37,8 @@ class ModelBaseView(HTTPMethodView):
         instance = self.model.objects(id=param_id)
         if not instance:
             model_name = self.model.__name__.replace('Model', '')
-            return await error_response(msg=f'{model_name} not found', status=404)
+            return await error_response(msg=f'{model_name} not found',
+                                        status=404)
 
         return await self._make_request(instance)
 
@@ -40,7 +47,8 @@ class ModelBaseView(HTTPMethodView):
             instance = self.model.if_not_exists().create(**request.json)
             return await self._make_request(instance)
         except LWTException:
-            return await error_response(msg=f'Instance already exist.', status=400)
+            return await error_response(msg=f'Instance already exist.',
+                                        status=400)
 
     @check_uuid
     async def delete(self, request):
@@ -48,6 +56,7 @@ class ModelBaseView(HTTPMethodView):
         instance = self.model.objects(id=param_id)
         if not instance:
             model_name = self.model.__name__.replace('Model', '')
-            return await error_response(msg=f'{model_name} not found', status=404)
+            return await error_response(msg=f'{model_name} not found',
+                                        status=404)
 
         return await self._make_request(instance)

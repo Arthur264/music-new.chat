@@ -1,3 +1,5 @@
+import logging
+
 import aiohttp
 from aiocassandra import aiosession
 from cassandra.cluster import Cluster
@@ -5,7 +7,8 @@ from cassandra.cqlengine import connection
 from cassandra.cqlengine.management import create_keyspace_simple
 
 from app.listeners.db import setup_db
-from config import CLUSTER_HOST, CLUSTER_KEY_SPACE, CLUSTER_NAME
+from config import CLUSTER_HOST, CLUSTER_KEY_SPACE, CLUSTER_NAME, \
+    LOGGER_FORMAT, DEBUG_LEVEL
 
 
 def before_server_start(app, loop):
@@ -32,6 +35,13 @@ def before_server_start(app, loop):
 
     setup_db()
     app.db_session = session
+
+    logger = logging.getLogger()
+    logger.setLevel(DEBUG_LEVEL)
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter(LOGGER_FORMAT))
+    logger.addHandler(handler)
+    app.log = logger
 
 
 def after_server_stop(app, loop):

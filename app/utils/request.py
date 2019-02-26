@@ -27,7 +27,7 @@ def check_uuid(func):
     return wrapper
 
 
-def authorized(methods=['PATCH', 'PUT', 'POST', 'DELETE']):
+def authorized(methods=('PATCH', 'PUT', 'POST', 'DELETE')):
     def decorator(f):
         @wraps(f)
         async def wrapper(request, *args, **kwargs):
