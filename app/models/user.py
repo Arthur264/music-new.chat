@@ -10,7 +10,6 @@ class UserModel(Model):
     first_name = columns.Text(required=True)
     last_name = columns.Text(required=True)
     username = columns.Text(required=True, primary_key=True)
-    password = columns.Text(required=True)
     email = columns.Text(required=True)
     active = columns.Boolean(default=False)
     admin = columns.Boolean(default=False)

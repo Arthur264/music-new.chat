@@ -8,7 +8,7 @@ class RedisConnection:
         self._connections = {}
 
     def qsize(self):
-        return self._pool.llen(self.key)
+        return self._pool.llen()
 
     def empty(self):
         return self.qsize() == 0

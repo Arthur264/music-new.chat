@@ -10,6 +10,7 @@ from websockets import WebSocketCommonProtocol
 class Handler(ABC):
     _pub: ConnectionsPool = None
     _channel: Channel = None
+    _queue_conn = None
 
     @classmethod
     async def initialize(cls, channel, queue_conn):
@@ -17,6 +18,7 @@ class Handler(ABC):
         redis = await queue_conn.get_redis()
         handler._pub = redis
         handler._channel = channel
+        handler._queue_conn = queue_conn
         return handler
 
 

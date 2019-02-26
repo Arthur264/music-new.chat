@@ -1,10 +1,12 @@
 import uuid
+from urllib.parse import urljoin
 
 from sanic.request import Request
 from sanic.response import json
 from six import wraps
 
 from app.http import error_response
+from config import API_URL
 
 
 def check_uuid(func):
@@ -45,3 +47,7 @@ def authorized(methods=['PATCH', 'PUT', 'POST', 'DELETE']):
         return wrapper
 
     return decorator
+
+
+def url_for(url):
+    return urljoin(API_URL, url)
