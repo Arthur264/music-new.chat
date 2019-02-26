@@ -1,6 +1,5 @@
 import logging
 
-import aiohttp
 from aiocassandra import aiosession
 from cassandra.cluster import Cluster
 from cassandra.cqlengine import connection
@@ -12,17 +11,12 @@ from config import CLUSTER_HOST, CLUSTER_KEY_SPACE, CLUSTER_NAME, \
 
 
 def before_server_start(app, loop):
-    app.aiohttp_session = aiohttp.ClientSession(loop=loop)
-
     cluster = Cluster([CLUSTER_HOST])
     session = cluster.connect()
     session.execute(
         """
         CREATE KEYSPACE IF NOT EXISTS %s 
-        WITH REPLICATION = { 
-            'class' : 'SimpleStrategy', 
-            'replication_factor' : 1,
-        };
+        WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
         """ % CLUSTER_KEY_SPACE)
     session = cluster.connect(keyspace=CLUSTER_KEY_SPACE)
     aiosession(session)
@@ -46,5 +40,5 @@ def before_server_start(app, loop):
 
 def after_server_stop(app, loop):
     app.db_sesion.shutdown()
-    loop.run_until_complete(app.session.close())
+    loop.run_until_complete(app.aiohttp_session.close())
     loop.close()

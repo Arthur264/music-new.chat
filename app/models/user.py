@@ -42,11 +42,6 @@ class UserModel(Model):
                 'type': 'string',
                 'required': True,
             },
-            'password': {
-                'type': 'string',
-                'required': True,
-                'min': 8,
-            },
             'email': {
                 'type': 'string',
                 'required': True,

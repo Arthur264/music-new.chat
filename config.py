@@ -13,7 +13,7 @@ DATE_TIME_FORMAT = None
 REDIS_PORT = 6379
 REDIS_HOSTNAME = 'localhost'
 
-DEBUG_LEVEL = 'INFO'
+DEBUG_LEVEL = 'ERROR'
 
 CLUSTER_KEY_SPACE = 'music_new_messages'
 CLUSTER_NAME = 'music_new'

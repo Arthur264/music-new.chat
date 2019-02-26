@@ -51,3 +51,11 @@ def authorized(methods=('PATCH', 'PUT', 'POST', 'DELETE')):
 
 def url_for(url):
     return urljoin(API_URL, url)
+
+
+async def fetch(session, url, only_json=True, **kwargs):
+    async with session.get(url, **kwargs) as response:
+        if only_json:
+            return await response.json()
+        else:
+            return response.status, await response.json()

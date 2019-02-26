@@ -32,7 +32,7 @@ class ProducerHandler(Handler):
                     message = await self._channel.get(encoding="utf-8")
                     await websocket.send(message)
             except websockets.ConnectionClosed as e:
-                print(f"<ProducerHandler:broadcast>[error] {e}")
+                logger.error(f"<ProducerHandler:broadcast>[error] {e}")
 
 
 class ConsumerHandler(Handler):
@@ -48,7 +48,7 @@ class ConsumerHandler(Handler):
                     logger.warn(f"Invalid action requested full msg: {msg}")
 
         except websockets.ConnectionClosed as e:
-            print(f"<ConsumerHandler:handle>[error] {e}")
+            logger.error(f"<ConsumerHandler:handle>[error] {e}")
 
     async def _chat(self, msg):
         dumped_msg = json.dumps(msg)

@@ -1,11 +1,12 @@
+import aiohttp
 import logging
 
+from asyncio import get_event_loop
 from sanic import Sanic, Blueprint
-from sanic_jwt import initialize
 
 from app.app_logging import LOGGING
-from app.controllers.auth import authenticate
 from app.listeners.events import before_server_start, after_server_stop
+from app.middlewares.token import token_middleware
 from app.views.room import RoomView
 from app.views.user import UserView
 from app.websockets import web_socket_chat
@@ -30,9 +31,7 @@ class MainSetup:
 
         app.config.update(SANIC_SETTINGS)
 
-        # Auth
-        initialize(app, authenticate=authenticate)
-
+        app.aiohttp_session = aiohttp.ClientSession(loop=get_event_loop())
         # Set routes
         app.add_route(RoomView.as_view(), '/room')
         app.add_route(UserView.as_view(), '/user')
@@ -41,6 +40,9 @@ class MainSetup:
         # Register listener
         app.register_listener(before_server_start, 'before_server_start')
         app.register_listener(after_server_stop, 'after_server_stop')
+
+        # Register middleware
+        app.register_middleware(token_middleware)
 
         app.blueprint(SANIC_BLUEPRINT)
 

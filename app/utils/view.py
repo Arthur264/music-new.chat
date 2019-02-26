@@ -2,17 +2,11 @@ from cassandra.cqlengine.query import LWTException
 from sanic.views import HTTPMethodView
 
 from app.http import error_response, json_response
-from app.main import MainSetup
 from app.utils.request import check_uuid
 
 
 class ModelBaseView(HTTPMethodView):
     model = None
-    app = None
-
-    def dispatch_request(self, request, *args, **kwargs):
-        self.app = MainSetup.get_app()
-        return super().dispatch_request(request, *args, **kwargs)
 
     @staticmethod
     async def _make_request(data, many=False):
