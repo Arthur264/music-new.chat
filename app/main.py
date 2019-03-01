@@ -7,6 +7,7 @@ from sanic import Sanic, Blueprint
 from app.app_logging import LOGGING
 from app.listeners.events import before_server_start, after_server_stop
 from app.middlewares.token import token_middleware
+from app.utils.request import http
 from app.views.room import RoomView
 from app.views.user import UserView
 from app.websockets import web_socket_chat
@@ -31,7 +32,7 @@ class MainSetup:
 
         app.config.update(SANIC_SETTINGS)
 
-        app.aiohttp_session = aiohttp.ClientSession(loop=get_event_loop())
+        app.http = http
         # Set routes
         app.add_route(RoomView.as_view(), '/room')
         app.add_route(UserView.as_view(), '/user')

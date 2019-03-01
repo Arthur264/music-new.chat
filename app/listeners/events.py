@@ -10,7 +10,7 @@ from config import CLUSTER_HOST, CLUSTER_KEY_SPACE, CLUSTER_NAME, \
     LOGGER_FORMAT, DEBUG_LEVEL
 
 
-def before_server_start(app, loop):
+def before_server_start(app, _):
     cluster = Cluster([CLUSTER_HOST])
     session = cluster.connect()
     session.execute(
@@ -39,6 +39,5 @@ def before_server_start(app, loop):
 
 
 def after_server_stop(app, loop):
-    app.db_sesion.shutdown()
-    loop.run_until_complete(app.aiohttp_session.close())
+    app.db_session.shutdown()
     loop.close()

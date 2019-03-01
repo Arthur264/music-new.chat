@@ -1,6 +1,8 @@
 import uuid
 from urllib.parse import urljoin
 
+import aiohttp
+import async_timeout
 from sanic.request import Request
 from sanic.response import json
 from six import wraps
@@ -53,9 +55,24 @@ def url_for(url):
     return urljoin(API_URL, url)
 
 
-async def fetch(session, url, only_json=True, **kwargs):
-    async with session.get(url, **kwargs) as response:
+async def fetch(session, url, data, method, only_json=True, **kwargs):
+    async with session.request(method, url, data=data, **kwargs) as response:
         if only_json:
             return await response.json()
         else:
             return response.status, await response.json()
+
+
+async def http(url, timeout=15, data=None, method='GET',
+               only_json=True, **kwargs):
+
+    with async_timeout.timeout(timeout):
+        async with aiohttp.ClientSession() as session:
+            return await fetch(
+                session=session,
+                url=url,
+                data=data,
+                method=method,
+                only_json=only_json,
+                **kwargs,
+            )
