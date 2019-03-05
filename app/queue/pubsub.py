@@ -26,7 +26,7 @@ class ProducerHandler(Handler):
         with await self._pub as conn:
             await conn.execute_pubsub('subscribe', self._channel)
             try:
-                while True:
+                while not websocket.closed:
                     message = await self._channel.get(encoding="utf-8")
                     await websocket.send(message)
             except websockets.ConnectionClosed as e:
@@ -37,7 +37,7 @@ class ConsumerHandler(Handler):
 
     async def handle(self, websocket: websockets.WebSocketCommonProtocol):
         try:
-            while True:
+            while not websocket.closed:
                 msg = await websocket.recv()
                 loaded_msg = json.loads(msg)
                 try:

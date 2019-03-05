@@ -16,3 +16,6 @@ aiocassandra
 
 # Redis
 aioredis
+
+# Websocket
+websockets
