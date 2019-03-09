@@ -5,7 +5,7 @@ import click
 import uvloop
 from sanic.websocket import WebSocketProtocol
 
-from app.main import create_app
+from app.main import MainSetup
 
 
 @click.group()
@@ -23,7 +23,7 @@ def cli(ctx, debug):
 @click.option('--access_log', default=False, type=bool)
 @click.pass_context
 def runserver(ctx, host, port, access_log):
-    app = create_app()
+    app = MainSetup.create_app()
     app.run(
         debug=ctx.obj['DEBUG'],
         workers=1,

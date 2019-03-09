@@ -13,3 +13,12 @@ DATE_TIME_FORMAT = None
 
 REDIS_PORT = 6379
 REDIS_HOSTNAME = 'localhost'
+
+DEBUG_LEVEL = 'ERROR'
+
+CLUSTER_KEY_SPACE = 'music_new_messages'
+CLUSTER_NAME = 'music_new'
+CLUSTER_HOST = '127.0.0.1'
+LOGGER_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+
+API_URL = 'http://music-artyr264.c9users.io:8081/api/v1/'

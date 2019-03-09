@@ -15,9 +15,10 @@ def validate_json(schema, clean=False, methods=('PUT', 'POST')):
     def vd(f):
         @wraps(f)
         async def wrapper(*args, **kwargs):
-            request = next((arg for arg in args if isinstance(arg, Request)), None)
+            request = next((arg for arg in args if isinstance(arg, Request)),
+                           None)
             if not request:
-                return ValueError('Param request not exist.')
+                return ValueError('Args request not exist.')
 
             if request.method not in methods:
                 response = await f(*args, **kwargs)
@@ -33,7 +34,8 @@ def validate_json(schema, clean=False, methods=('PUT', 'POST')):
                 response = await f(*args, **kwargs)
                 return response
             else:
-                return _validation_failed_response(validator, JSON_DATA_ENTRY_TYPE)
+                return _validation_failed_response(validator,
+                                                   JSON_DATA_ENTRY_TYPE)
 
         return wrapper
 

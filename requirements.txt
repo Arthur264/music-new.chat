@@ -9,6 +9,7 @@ sanic-jwt
 uvloop
 asyncio
 pytest-sanic
+websocket-client
 
 # Cassandra
 cassandra-driver
@@ -16,6 +17,9 @@ aiocassandra
 
 # Redis
 aioredis
+
+# Aiohttp
+aiohttp
 
 # Websocket
 websockets

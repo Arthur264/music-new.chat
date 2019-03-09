@@ -1,5 +1,5 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
@@ -10,7 +10,6 @@ class UserModel(Model):
     first_name = columns.Text(required=True)
     last_name = columns.Text(required=True)
     username = columns.Text(required=True, primary_key=True)
-    password = columns.Text(required=True)
     email = columns.Text(required=True)
     active = columns.Boolean(default=False)
     admin = columns.Boolean(default=False)
@@ -42,11 +41,6 @@ class UserModel(Model):
             'username': {
                 'type': 'string',
                 'required': True,
-            },
-            'password': {
-                'type': 'string',
-                'required': True,
-                'min': 8,
             },
             'email': {
                 'type': 'string',
