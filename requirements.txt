@@ -23,3 +23,6 @@ aiohttp
 
 # Websocket
 websockets
+
+# Test
+pytest-sanic

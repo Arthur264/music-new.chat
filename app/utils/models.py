@@ -1,4 +1,5 @@
 import abc
+
 from cassandra.cqlengine.models import Model
 
 

@@ -1,14 +1,15 @@
 <html>
 <head>
+    <title>Chart</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
           type="text/css"
           rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           rel="stylesheet"
           id="bootstrap-css">
     <link href="static/css/style.css" rel="stylesheet">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -21,13 +22,9 @@
                         <h4>Recent</h4>
                     </div>
                     <div class="srch_bar">
-                        <div class="stylish-input-group">
-                            <input type="text" class="search-bar"
-                                   placeholder="Search">
-                            <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search"
-                                          aria-hidden="true"></i> </button>
-                </span></div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                          Create room
+                        </button>
                     </div>
                 </div>
                 <div class="inbox_chat">
@@ -197,6 +194,26 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="text" name="name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"><Create></Create></button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="static/js/app.js"></script>

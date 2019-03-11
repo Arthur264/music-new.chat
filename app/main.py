@@ -1,7 +1,5 @@
-import aiohttp
 import logging
 
-from asyncio import get_event_loop
 from sanic import Sanic, Blueprint
 
 from app.app_logging import LOGGING
@@ -10,6 +8,7 @@ from app.middlewares.token import token_middleware
 from app.utils.request import http
 from app.views.room import RoomView
 from app.views.user import UserView
+from app.views.index import index
 from app.websockets import web_socket_chat
 from config import PROJECT_ID, SANIC_SETTINGS
 
@@ -21,6 +20,8 @@ class MainSetup:
 
     @staticmethod
     def get_app():
+        if not MainSetup._app:
+            MainSetup._app = MainSetup.create_app()
         return MainSetup._app
 
     @staticmethod
@@ -33,7 +34,12 @@ class MainSetup:
         app.config.update(SANIC_SETTINGS)
 
         app.http = http
+
+        # Static files
+        app.static('/static', './app/templates/static')
+
         # Set routes
+        app.add_route(index, '/index')
         app.add_route(RoomView.as_view(), '/room')
         app.add_route(UserView.as_view(), '/user')
         app.add_websocket_route(handler=web_socket_chat, uri="chat")

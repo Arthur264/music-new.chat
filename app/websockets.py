@@ -9,10 +9,12 @@ from app.queue.redis import queue_conn_sub, queue_conn_pub
 
 CONNECTED = set()
 
+
 async def web_socket_chat(_, websocket: WebSocketCommonProtocol):
     CONNECTED.add(websocket)
     channel_name = await websocket.recv()
     channel_data = json.loads(channel_name)
+    print('channel_data', channel_data)
     channel = Channel(channel_data['room_id'], is_pattern=False)
     consumer_handler = await ConsumerHandler.initialize(channel,
                                                         queue_conn_pub)

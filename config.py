@@ -22,3 +22,12 @@ CLUSTER_HOST = '127.0.0.1'
 LOGGER_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 
 API_URL = 'http://music-artyr264.c9users.io:8081/api/v1/'
+
+OPEN_PATHS = (
+    '/index',
+    '/static',
+)
+
+if 'test':
+    CLUSTER_KEY_SPACE = 'music_new_messages_test'
+    CLUSTER_NAME = 'music_new_test'

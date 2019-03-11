@@ -30,6 +30,7 @@ class ProducerHandler(Handler):
             try:
                 while not websocket.closed:
                     message = await self._channel.get(encoding="utf-8")
+                    print('message', message)
                     await websocket.send(message)
             except websockets.ConnectionClosed as e:
                 logger.error(f"<ProducerHandler:broadcast>[error] {e}")
@@ -42,6 +43,7 @@ class ConsumerHandler(Handler):
             while not websocket.closed:
                 msg = await websocket.recv()
                 loaded_msg = json.loads(msg)
+                print('loaded_msg', loaded_msg, websocket)
                 try:
                     await self._chat(loaded_msg)
                 except AttributeError:

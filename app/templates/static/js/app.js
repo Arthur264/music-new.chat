@@ -1,18 +1,22 @@
-let ws = new WebSocket('ws://localhost:8080/chat');
-
+const token = "6e1a9ed4834ca3e5d27436b9e3df54f4d65114e4";
+const ws = new WebSocket(`ws://localhost:8080/chat?token=${token}`);
 let app = {
-
     web_socket: function(){
+        let self = this;
         ws.onopen = function () {
             console.log('websocket is connected ...')
             let room_data = {
-                'room_id': '435523c9-c5fd-4675-8ffb-4d4bd3bcc68f'
+               'room_id': '435523c9-c5fd-4675-8ffb-4d4bd3bcc68f'
             }
-            ws.send(JSON.stringify(room_data))
+            self._send(room_data)
         }
+
         ws.onmessage = function (ev) {
             console.log(ev);
         }
+    },
+    _send: function(data){
+        ws.send(JSON.stringify(data))
     },
     on_message: function(){
         $('.msg_send_btn').click(function(){

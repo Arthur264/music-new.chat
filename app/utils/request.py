@@ -65,7 +65,6 @@ async def fetch(session, url, data, method, only_json=True, **kwargs):
 
 async def http(url, timeout=15, data=None, method='GET',
                only_json=True, **kwargs):
-
     with async_timeout.timeout(timeout):
         async with aiohttp.ClientSession() as session:
             return await fetch(
