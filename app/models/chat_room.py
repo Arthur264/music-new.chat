@@ -7,9 +7,9 @@ from cassandra.cqlengine.models import Model
 
 class CharRoomModel(Model):
     id = columns.UUID(primary_key=True, default=uuid.uuid4)
-    name = columns.Text(required=True)
-    owner = columns.UUID(required=True)
-    users = columns.Set(columns.UUID())
+    name = columns.Text(required=True, primary_key=True)
+    owner = columns.Integer(required=True)
+    users = columns.Set(columns.Integer())
     create_at = columns.DateTime(default=datetime.now())
 
     def to_dict(self):

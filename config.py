@@ -27,7 +27,3 @@ OPEN_PATHS = (
     '/index',
     '/static',
 )
-
-if 'test':
-    CLUSTER_KEY_SPACE = 'music_new_messages_test'
-    CLUSTER_NAME = 'music_new_test'

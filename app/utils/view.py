@@ -38,11 +38,16 @@ class ModelBaseView(HTTPMethodView):
 
     async def post(self, request):
         try:
-            instance = self.model.if_not_exists().create(**request.json)
+            data = self.prepare_data(request)
+            instance = self.model.if_not_exists().create(**data)
             return await self._make_request(instance)
         except LWTException:
             return await error_response(msg=f'Instance already exist.',
                                         status=400)
+
+    @staticmethod
+    def prepare_data(request):
+        return request.json
 
     @check_uuid
     async def delete(self, request):

@@ -4,7 +4,7 @@ from sanic import Sanic, Blueprint
 
 from app.app_logging import LOGGING
 from app.listeners.events import before_server_start, after_server_stop
-from app.middlewares.token import token_middleware
+from app.middlewares.token import token_middleware, cookie_middleware
 from app.utils.request import http
 from app.views.room import RoomView
 from app.views.user import UserView
@@ -12,7 +12,7 @@ from app.views.index import index
 from app.websockets import web_socket_chat
 from config import PROJECT_ID, SANIC_SETTINGS
 
-SANIC_BLUEPRINT = Blueprint("blueprints", url_prefix="/blueprint", version=1)
+SANIC_BLUEPRINT = Blueprint("blueprints", url_prefix="/v1", version=1)
 
 
 class MainSetup:
@@ -50,6 +50,7 @@ class MainSetup:
 
         # Register middleware
         app.register_middleware(token_middleware)
+        app.register_middleware(cookie_middleware, 'response')
 
         app.blueprint(SANIC_BLUEPRINT)
 
